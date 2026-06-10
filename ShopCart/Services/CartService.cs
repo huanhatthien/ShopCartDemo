@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using ShopCart.Models;
+
 namespace ShopCart.Services;
 
 public class CartService : ICartService
@@ -19,12 +20,14 @@ public class CartService : ICartService
             : JsonSerializer.Deserialize<ShoppingCart>(json)!;
     }
 
-    // ── Thêm sản phẩm; tự gộp nếu đã có ──────────────────
+    // ── Thêm sản phẩm; tự gộp nếu trùng ID VÀ trùng Size ──
     public void AddToCart(CartItem item)
     {
         var cart = GetCart();
+
+        // Kiểm tra trùng ID và trùng Size
         var existing = cart.Items
-            .FirstOrDefault(x => x.ProductId == item.ProductId);
+            .FirstOrDefault(x => x.ProductId == item.ProductId && x.SelectedSize == item.SelectedSize);
 
         if (existing is not null)
             existing.Quantity += item.Quantity;
@@ -34,12 +37,13 @@ public class CartService : ICartService
         SaveCart(cart);
     }
 
-    // ── Cập nhật số lượng ─────────────────────────────────
-    public void UpdateQuantity(int productId, int quantity)
+    // ── Cập nhật số lượng theo ID và Size ─────────────────
+    public void UpdateQuantity(int productId, string size, int quantity)
     {
         var cart = GetCart();
         var item = cart.Items
-            .FirstOrDefault(x => x.ProductId == productId);
+            .FirstOrDefault(x => x.ProductId == productId && x.SelectedSize == size);
+
         if (item is null) return;
 
         if (quantity <= 0) cart.Items.Remove(item);
@@ -48,11 +52,11 @@ public class CartService : ICartService
         SaveCart(cart);
     }
 
-    // ── Xoá một item ──────────────────────────────────────
-    public void RemoveFromCart(int productId)
+    // ── Xoá một item theo ID và Size ──────────────────────
+    public void RemoveFromCart(int productId, string size)
     {
         var cart = GetCart();
-        cart.Items.RemoveAll(x => x.ProductId == productId);
+        cart.Items.RemoveAll(x => x.ProductId == productId && x.SelectedSize == size);
         SaveCart(cart);
     }
 
@@ -60,6 +64,5 @@ public class CartService : ICartService
     public void ClearCart() => _session.Remove(CART_KEY);
 
     private void SaveCart(ShoppingCart cart)
-        => _session.SetString(CART_KEY,
-               JsonSerializer.Serialize(cart));
+        => _session.SetString(CART_KEY, JsonSerializer.Serialize(cart));
 }

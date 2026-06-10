@@ -18,8 +18,8 @@ public class ProductService : IProductService
                  Category="Sách",       Price=220_000,
                  Description="Từ cơ bản đến nâng cao" },
         new() { Id=5, Emoji="❤️", Name="My Heart",
-                 Category="Love",  Price=180_000,
-                 Description="A heart filled with love, warmth, and cherished memories. A simple reminder of the feelings that connect us" },
+         Category="Love",  Price=0, // Đặt bằng 0 
+         Description="A heart filled with love, warmth, and cherished memories" },
         new() { Id=6, Emoji="🧢", Name="Nón kết",
                  Category="Thời trang", Price=120_000,
                  Description="Thêu logo" },

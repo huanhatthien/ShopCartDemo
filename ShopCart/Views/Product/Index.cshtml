@@ -20,7 +20,14 @@
                         </span>
                         <p class="text-muted small">@p.Description</p>
                         <p class="fs-5 fw-bold text-danger">
-                            @p.Price.ToString("N0") đ
+                            @if (p.Name == "My Heart")
+                            {
+                                <span>Vô giá ❤️</span>
+                            }
+                            else
+                            {
+                                <span>@p.Price.ToString("N0") đ</span>
+                            }
                         </p>
                     </div>
                     <div class="card-footer bg-white border-0 pb-3">
@@ -29,7 +36,7 @@
                             <input type="hidden" name="returnUrl" value="@Context.Request.Path" />
 
                             <div class="input-group">
-                                @if (p.Category == "Áo")
+                                @if (!string.IsNullOrEmpty(p.Name) && p.Name.ToLower().Contains("áo"))
                                 {
                                     <select name="selectedSize" class="form-select" style="max-width:80px">
                                         <option value="S">S</option>
@@ -38,15 +45,42 @@
                                         <option value="XL">XL</option>
                                     </select>
                                 }
+                                else if (!string.IsNullOrEmpty(p.Name) && p.Name.ToLower().Contains("giày"))
+                                {
+                                    <select name="selectedSize" class="form-select" style="max-width:80px">
+                                        @for (int i = 30; i <= 40; i++)
+                                        {
+                                            if (i == 39)
+                                            {
+                                                <option value="@i" selected>@i</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@i">@i</option>
+                                            }
+                                        }
+                                    </select>
+                                }
                                 else
                                 {
                                     <input type="hidden" name="selectedSize" value="" />
                                 }
 
-                                <input type="number" name="quantity"
-                                       value="1" min="1" max="99"
-                                       class="form-control"
-                                       style="max-width:72px" />
+                                @if (p.Name == "My Heart")
+                                {
+                                    <input type="number" name="quantity"
+                                           value="1" min="1" max="99"
+                                           class="form-control"
+                                           style="max-width:72px; background-color:#f8d7da; color:#721c24;"
+                                           oninput="if(this.value > 1) { this.value = 1; this.setCustomValidity('Trái tim anh chỉ có 1 ❤️'); this.reportValidity(); setTimeout(() => this.setCustomValidity(''), 2000); }" />
+                                }
+                                else
+                                {
+                                    <input type="number" name="quantity"
+                                           value="1" min="1" max="99"
+                                           class="form-control"
+                                           style="max-width:72px" />
+                                }
 
                                 <button type="submit" class="btn btn-primary">
                                     Thêm

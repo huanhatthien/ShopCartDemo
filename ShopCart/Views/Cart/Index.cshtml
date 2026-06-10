@@ -31,24 +31,43 @@
                 @foreach (var item in Model.Items)
                 {
                     <tr>
-                        <td><strong>@item.ProductName</strong></td>
+                        <td>
+                            <strong>@item.ProductName</strong>
+                            @if (!string.IsNullOrEmpty(item.SelectedSize))
+                            {
+                                <span class="badge bg-secondary ms-2">Size: @item.SelectedSize</span>
+                            }
+                        </td>
                         <td>@item.Price.ToString("N0") đ</td>
                         <td>
                             <form asp-action="UpdateQuantity" method="post"
                                   class="d-flex align-items-center gap-2">
-                                <input type="hidden" name="id"
-                                       value="@item.ProductId" />
+                                <input type="hidden" name="id" value="@item.ProductId" />
+                                <input type="hidden" name="size" value="@item.SelectedSize" />
+
                                 <button type="submit" name="quantity"
                                         value="@(item.Quantity - 1)"
                                         class="btn btn-sm btn-outline-secondary">
                                     −
                                 </button>
-                                <span class="fw-bold">@item.Quantity</span>
-                                <button type="submit" name="quantity"
-                                        value="@(item.Quantity + 1)"
-                                        class="btn btn-sm btn-outline-secondary">
-                                    +
-                                </button>
+                                <span class="fw-bold px-2">@item.Quantity</span>
+
+                                @if (item.ProductName == "My Heart")
+                                {
+                                    <button type="button"
+                                            class="btn btn-sm btn-outline-secondary"
+                                            onclick="alert('Trái tim anh chỉ có 1 ❤️')">
+                                        +
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button type="submit" name="quantity"
+                                            value="@(item.Quantity + 1)"
+                                            class="btn btn-sm btn-outline-secondary">
+                                        +
+                                    </button>
+                                }
                             </form>
                         </td>
                         <td class="fw-bold text-danger">
@@ -56,11 +75,12 @@
                         </td>
                         <td>
                             <form asp-action="Remove" method="post">
-                                <input type="hidden" name="id"
-                                       value="@item.ProductId" />
+                                <input type="hidden" name="id" value="@item.ProductId" />
+                                <input type="hidden" name="size" value="@item.SelectedSize" />
+
                                 <button type="submit"
                                         class="btn btn-sm btn-danger"
-                                        onclick="return confirm('Xoá?')">
+                                        onclick="return confirm('Xoá sản phẩm này?')">
                                     Xoá
                                 </button>
                             </form>
@@ -83,11 +103,11 @@
 
         <div class="d-flex justify-content-between mt-3">
             <a asp-controller="Product" asp-action="Index"
-                   class="btn btn-outline-secondary">
+               class="btn btn-outline-secondary">
                 ← Tiếp tục mua sắm
             </a>
             <a asp-controller="Order" asp-action="Checkout"
-                   class="btn btn-danger btn-lg">
+               class="btn btn-danger btn-lg">
                 Thanh toán →
             </a>
         </div>
