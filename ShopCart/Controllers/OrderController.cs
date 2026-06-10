@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShopCart.Models;
 using ShopCart.Services;
+
 namespace ShopCart.Controllers;
 
 public class OrderController : Controller
@@ -8,9 +9,11 @@ public class OrderController : Controller
     private readonly ICartService _cart;
     private readonly IOrderService _orders;
 
-    public OrderController(ICartService cart,
-                           IOrderService orders)
-    { _cart = cart; _orders = orders; }
+    public OrderController(ICartService cart, IOrderService orders)
+    {
+        _cart = cart;
+        _orders = orders;
+    }
 
     // GET /Order/Checkout ─────────────────────────────────
     public IActionResult Checkout()
@@ -27,19 +30,15 @@ public class OrderController : Controller
 
     // POST /Order/Checkout ────────────────────────────────
     [HttpPost, ValidateAntiForgeryToken]
-    public IActionResult Checkout(string customerName,
-                                  string phone,
-                                  string address,
-                                  string? note)
+    public IActionResult Checkout(string customerName, string phone, string address, string? note)
     {
-        if (string.IsNullOrWhiteSpace(customerName)
-         || string.IsNullOrWhiteSpace(address))
+        if (string.IsNullOrWhiteSpace(customerName) || string.IsNullOrWhiteSpace(address))
         {
-            ModelState.AddModelError("",
-                "Vui lòng điền đầy đủ thông tin.");
+            ModelState.AddModelError("", "Vui lòng điền đầy đủ thông tin.");
             ViewBag.Cart = _cart.GetCart();
             return View();
         }
+
         var cart = _cart.GetCart();
         var order = new Order
         {
@@ -48,18 +47,21 @@ public class OrderController : Controller
             Address = address,
             Note = note,
             TotalAmount = cart.TotalPrice,
+            // Đã cập nhật: Ánh xạ thêm SelectedSize từ giỏ hàng vào chi tiết đơn hàng
             OrderDetails = cart.Items.Select(i => new OrderDetail
             {
                 ProductId = i.ProductId,
                 ProductName = i.ProductName,
                 Price = i.Price,
                 Quantity = i.Quantity,
+                SelectedSize = i.SelectedSize // Đảm bảo size không bị mất khi lưu đơn
             }).ToList(),
         };
+
         var saved = _orders.CreateOrder(order);
-        _cart.ClearCart();   // xoá session sau khi lưu OK
-        return RedirectToAction(nameof(Success),
-                                new { id = saved.Id });
+        _cart.ClearCart();   // Xoá session giỏ hàng sau khi lưu OK
+
+        return RedirectToAction(nameof(Success), new { id = saved.Id });
     }
 
     // GET /Order/Success/{id} ─────────────────────────────
@@ -68,5 +70,13 @@ public class OrderController : Controller
         var order = _orders.GetById(id);
         if (order is null) return NotFound();
         return View(order);
+    }
+
+    // GET /Order/History ──────────────────────────────────
+    // Đã thêm mới: Hàm lấy toàn bộ danh sách đơn hàng đã lưu trong RAM ra ngoài View
+    public IActionResult History()
+    {
+        var allOrders = _orders.GetAll();
+        return View(allOrders);
     }
 }

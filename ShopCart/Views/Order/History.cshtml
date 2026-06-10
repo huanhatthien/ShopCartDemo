@@ -1,0 +1,64 @@
+﻿@model IEnumerable<ShopCart.Models.Order>
+@{
+    ViewData["Title"] = "Lịch sử đơn hàng";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">📦 Danh sách đơn hàng đã đặt</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            Bạn chưa đặt đơn hàng nào trên hệ thống.
+            <a asp-controller="Product" asp-action="Index">Quay lại trang mua sắm ngay</a>
+        </div>
+    }
+    else
+    {
+        @foreach (var order in Model)
+        {
+            <div class="card mb-4 shadow-sm border-0">
+                <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center py-3">
+                    <div>
+                        <span class="fw-bold fs-5">Mã Đơn: #@order.Id</span>
+                        <span class="ms-3 text-white-50">🕒 Ngày đặt: @order.CreatedDate.ToString("dd/MM/yyyy HH:mm")</span>
+                    </div>
+                    <span class="badge bg-warning text-dark fs-6">@order.Status</span>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3 small text-muted">
+                        <strong>Người nhận:</strong> @order.CustomerName | <strong>SĐT:</strong> @order.Phone <br />
+                        <strong>Địa chỉ giao hàng:</strong> @order.Address
+                    </div>
+                    <hr />
+
+                    <table class="table table-borderless align-middle mb-0">
+                        <tbody>
+                            @foreach (var item in order.OrderDetails)
+                            {
+                                <tr>
+                                    <td style="width: 50%;">
+                                        <strong>@item.ProductName</strong>
+                                        @if (!string.IsNullOrEmpty(item.SelectedSize))
+                                        {
+                                            <span class="badge bg-secondary ms-2">Size: @item.SelectedSize</span>
+                                        }
+                                    </td>
+                                    <td style="width: 20%;">@item.Price.ToString("N0") đ</td>
+                                    <td style="width: 10%;">x @item.Quantity</td>
+                                    <td style="width: 20%;" class="text-end fw-bold text-danger">
+                                        @((item.Price * item.Quantity).ToString("N0")) đ
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer bg-light text-end py-3">
+                    <span class="text-muted me-3">Tổng tiền đơn hàng:</span>
+                    <span class="fs-4 fw-bold text-danger">@order.TotalAmount.ToString("N0") đ</span>
+                </div>
+            </div>
+        }
+    }
+</div>

@@ -1,6 +1,80 @@
 ﻿@{
-    ViewData["Title"] = "Privacy Policy";
+    ViewData["Title"] = "Thông tin liên hệ";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0 rounded-3">
+                <div class="card-header bg-dark text-white text-center py-4">
+                    <h3 class="mb-0">📞 THÔNG TIN LIÊN HỆ CHỦ CỬA HÀNG</h3>
+                    <p class="text-muted-light small mb-0 mt-1">Chào mừng bạn đến với hệ thống hỗ trợ khách hàng của ShopCart</p>
+                </div>
+                <div class="card-body p-5">
+                    <div class="text-center mb-4">
+                        <div class="display-1 text-primary mb-2">🧑‍💼</div>
+                        <h4 class="fw-bold text-uppercase text-secondary">Hứa Nhất Thiên</h4>
+                        <span class="badge bg-danger px-3 py-2 fs-6 rounded-pill">Founder & CEO ShopCart</span>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <div class="row g-4">
+                        <div class="col-sm-6">
+                            <div class="d-flex align-items-center">
+                                <div class="fs-3 me-3 text-primary">📱</div>
+                                <div>
+                                    <h6 class="mb-0 fw-bold text-muted small">Số điện thoại</h6>
+                                    <p class="mb-0 fs-5 fw-semibold text-dark">0345 678 910</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="d-flex align-items-center">
+                                <div class="fs-3 me-3 text-success">📧</div>
+                                <div>
+                                    <h6 class="mb-0 fw-bold text-muted small">Email liên hệ</h6>
+                                    <p class="mb-0 fs-5 fw-semibold text-dark">thien.hua@shopcart.vn</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="d-flex align-items-start">
+                                <div class="fs-3 me-3 text-warning">📍</div>
+                                <div>
+                                    <h6 class="mb-0 fw-bold text-muted small">Địa chỉ trụ sở chính</h6>
+                                    <p class="mb-0 fs-5 text-dark">Khu công nghệ cao, Phường Hiệp Phú, TP. Thủ Đức, TP. Hồ Chí Minh</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info mt-5 border-0 text-center shadow-sm" role="alert">
+                        🕒 <strong>Thời gian làm việc:</strong> 24/7 bất kể ngày đêm - Luôn sẵn sàng phục vụ và lắng nghe phản hồi của bạn!
+                    </div>
+                </div>
+                <div class="card-footer bg-light text-center py-3 border-0">
+                    <a asp-controller="Product" asp-action="Index" class="btn btn-outline-dark">
+                        🛒 Quay lại mua sắm ngay
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .text-muted-light {
+        color: rgba(255,255,255,0.7) !important;
+    }
+
+    .card {
+        transition: transform 0.2s;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+</style>

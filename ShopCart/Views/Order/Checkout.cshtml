@@ -12,7 +12,6 @@
     }
 
     <div class="row">
-        <!-- Form -->
         <div class="col-md-7">
             <div class="card shadow-sm mb-4">
                 <div class="card-body">
@@ -55,23 +54,28 @@
             </div>
         </div>
 
-        <!-- Tóm tắt -->
         <div class="col-md-5">
             <div class="card shadow-sm">
                 <div class="card-body">
                     <h5>🧾 Tóm tắt đơn</h5>
                     @foreach (var item in cart.Items)
                     {
-                        <div class="d-flex justify-content-between
-                            py-1 border-bottom">
-                            <span>@item.ProductName × @item.Quantity</span>
-                            <span>
+                        <div class="d-flex justify-content-between py-2 border-bottom align-items-center">
+                            <div>
+                                <strong>@item.ProductName</strong> × @item.Quantity
+
+                                @if (!string.IsNullOrEmpty(item.SelectedSize))
+                                {
+                                    <br />
+                                    <span class="badge bg-secondary mt-1">Size: @item.SelectedSize</span>
+                                }
+                            </div>
+                            <span class="fw-semibold">
                                 @((item.Price * item.Quantity).ToString("N0")) đ
                             </span>
                         </div>
                     }
-                    <div class="d-flex justify-content-between mt-2
-                        fw-bold fs-5 text-danger">
+                    <div class="d-flex justify-content-between mt-3 fw-bold fs-5 text-danger">
                         <span>Tổng cộng</span>
                         <span>@cart.TotalPrice.ToString("N0") đ</span>
                     </div>
