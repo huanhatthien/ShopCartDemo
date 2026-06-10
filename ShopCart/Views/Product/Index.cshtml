@@ -1,0 +1,47 @@
+﻿@model IEnumerable<ShopCart.Models.Product>
+@{
+    ViewData["Title"] = "Sản phẩm";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">🛍️ Danh sách sản phẩm</h2>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var p in Model)
+        {
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body text-center">
+                        <div style="font-size:60px;line-height:1.1">
+                            @p.Emoji
+                        </div>
+                        <h5 class="mt-2 mb-1">@p.Name</h5>
+                        <span class="badge bg-secondary mb-1">
+                            @p.Category
+                        </span>
+                        <p class="text-muted small">@p.Description</p>
+                        <p class="fs-5 fw-bold text-danger">
+                            @p.Price.ToString("N0") đ
+                        </p>
+                    </div>
+                    <div class="card-footer bg-white border-0 pb-3">
+                        <form asp-controller="Cart"
+                              asp-action="AddToCart" method="post">
+                            <input type="hidden" name="id" value="@p.Id" />
+                            <input type="hidden" name="returnUrl"
+                                   value="@Context.Request.Path" />
+                            <div class="input-group">
+                                <input type="number" name="quantity"
+                                       value="1" min="1" max="99"
+                                       class="form-control"
+                                       style="max-width:72px" />
+                                <button type="submit" class="btn btn-primary">
+                                    Thêm vào giỏ
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
