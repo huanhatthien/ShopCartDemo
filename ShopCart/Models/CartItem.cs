@@ -6,6 +6,9 @@ public class CartItem
     public string ProductName { get; set; } = "";
     public decimal Price { get; set; }
     public int Quantity { get; set; }
-    // Tính toán — không lưu trong Session
+
+    // Thêm dòng này để lưu Size
+    public string SelectedSize { get; set; } = "";
+
     public decimal Total => Price * Quantity;
 }

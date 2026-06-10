@@ -24,18 +24,32 @@
                         </p>
                     </div>
                     <div class="card-footer bg-white border-0 pb-3">
-                        <form asp-controller="Cart"
-                              asp-action="AddToCart" method="post">
+                        <form asp-controller="Cart" asp-action="AddToCart" method="post">
                             <input type="hidden" name="id" value="@p.Id" />
-                            <input type="hidden" name="returnUrl"
-                                   value="@Context.Request.Path" />
+                            <input type="hidden" name="returnUrl" value="@Context.Request.Path" />
+
                             <div class="input-group">
+                                @if (p.Category == "Áo")
+                                {
+                                    <select name="selectedSize" class="form-select" style="max-width:80px">
+                                        <option value="S">S</option>
+                                        <option value="M" selected>M</option>
+                                        <option value="L">L</option>
+                                        <option value="XL">XL</option>
+                                    </select>
+                                }
+                                else
+                                {
+                                    <input type="hidden" name="selectedSize" value="" />
+                                }
+
                                 <input type="number" name="quantity"
                                        value="1" min="1" max="99"
                                        class="form-control"
                                        style="max-width:72px" />
+
                                 <button type="submit" class="btn btn-primary">
-                                    Thêm vào giỏ
+                                    Thêm
                                 </button>
                             </div>
                         </form>

@@ -19,7 +19,7 @@ public class ProductService : IProductService
                  Description="Từ cơ bản đến nâng cao" },
         new() { Id=5, Emoji="❤️", Name="My Heart",
                  Category="Love",  Price=180_000,
-                 Description="2.4GHz, dùng pin AA" },
+                 Description="A heart filled with love, warmth, and cherished memories. A simple reminder of the feelings that connect us" },
         new() { Id=6, Emoji="🧢", Name="Nón kết",
                  Category="Thời trang", Price=120_000,
                  Description="Thêu logo" },
